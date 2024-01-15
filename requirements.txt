@@ -1,0 +1,37 @@
+# Vietnamese Sign Language Detection System
+# Optimized for CPU training with limited data
+
+# Core dependencies
+numpy
+opencv-python
+mediapipe==0.10.5
+
+# Machine Learning
+tensorflow==2.15.0
+scikit-learn
+joblib
+
+# GUI
+PyQt5
+
+# Data processing
+pandas
+tqdm
+
+# Configuration and logging
+PyYAML
+colorama
+
+# Visualization
+matplotlib
+seaborn
+tabulate
+
+# Audio (optional)
+gtts
+pygame
+
+# Development tools (optional)
+pytest
+black
+flake8

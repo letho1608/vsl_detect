@@ -1,0 +1,59 @@
+# Vietnamese Sign Language Detection System Configuration
+
+# Model configuration
+model:
+  model_path: "Models/final_model.keras"
+  sequence_length: 60
+  prediction_threshold: 0.7
+  min_consecutive_predictions: 3
+  prediction_smoothing_window: 5
+
+# MediaPipe configuration
+mediapipe:
+  min_detection_confidence: 0.5
+  min_tracking_confidence: 0.5
+  static_image_mode: false
+  model_complexity: 1
+
+# Camera configuration
+camera:
+  camera_index: 0
+  frame_width: 640
+  frame_height: 480
+  fps: 30
+  flip_horizontal: true
+
+# Audio/TTS configuration
+audio:
+  language: "vi"
+  auto_speak: false
+  auto_speak_threshold: 5
+  voice_dir: "Voice"
+  temp_audio_cleanup: true
+
+# UI configuration
+ui:
+  window_title: "Hệ Thống Nhận Dạng Ngôn Ngữ Ký Hiệu"
+  window_width: 1200
+  window_height: 800
+  show_landmarks: true
+  show_confidence: true
+  theme: "default"
+
+# Data paths configuration
+data:
+  dataset_dir: "Dataset"
+  data_dir: "Data"
+  models_dir: "Models"
+  logs_dir: "Logs"
+  checkpoints_dir: "Models/checkpoints"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_handler: true
+  console_handler: true
+  log_file: "Logs/app.log"
+  max_file_size: 10485760  # 10MB
+  backup_count: 5
