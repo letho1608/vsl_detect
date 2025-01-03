@@ -1,102 +1,149 @@
-# Sign Language Recognition System App
-A real-time sign language recognition system using deep learning and computer vision techniques.
+# Vietnamese Sign Language Recognition System
 
-## Project Structure
+A real-time sign language recognition system using deep learning and computer vision techniques, specialized for Vietnamese sign language.
+
+## Directory Structure
 
 ```
-├── Data/                  # Processed data directory
-├── Dataset/              # Raw video data and labels
-├── Logs/                # Logs and mapping directory
-├── Models/              # Trained models directory
-│   └── checkpoints/    # Training checkpoints
+├── Dataset/                # Raw data directory
+│   ├── Video/             # Original sign language videos
+│   └── Text/              # Text labels (Label.csv)
+├── Data/                  # Processed training data
+├── Models/                # Trained model files
+│   ├── checkpoints/      # Training checkpoints
+│   └── final_model.keras # Final trained model
+├── Logs/                 # Logs and mappings
 └── Scripts/
-    ├── CreateData.py   # Data collection and processing
-    ├── CheckData.py    # Data integrity verification
-    ├── Training.py     # Model training
-    └── Main.py         # Main recognition program
+    ├── Main.py          # Main application
+    ├── Extract.py       # Text extraction from videos
+    ├── Download.py      # Video downloader
+    ├── CreateData.py    # Data processor
+    ├── Training.py      # Model trainer
+    └── CheckData.py     # Data integrity checker
 ```
 
-## System Requirements
+## Requirements
 
 ### Hardware
-- CPU or CUDA-capable GPU (recommended)
 - Webcam for real-time recognition
-- Minimum 8GB RAM
+- 8GB RAM minimum
+- CUDA-capable GPU (recommended)
 
 ### Software
-- Python 3.6 or higher
-- PyTorch
+- Python 3.8+
+- TensorFlow 2.x
 - MediaPipe
 - OpenCV
+- PyQt5
+- Tesseract OCR
 - CUDA Toolkit (optional)
 
 ## Installation
 
-1. Clone repository:
+1. Install required software:
 ```bash
-git clone <repository-url>
-cd sign-language-recognition
+# Install Tesseract OCR
+# Windows: Download from https://github.com/UB-Mannheim/tesseract/wiki
+# Add Vietnamese language pack
+
+# Install Python dependencies
+pip install tensorflow opencv-python mediapipe PyQt5 pytesseract
+pip install gtts playsound pandas tqdm pygame pywin32
 ```
 
-2. Install dependencies:
+2. Clone and setup:
 ```bash
-pip install -r requirements.txt
+git clone <repository-url>
+cd vietnamese-sign-language
 ```
 
 ## Usage
 
 ### 1. Data Collection
 ```bash
-python CreateData.py
-```
-- Collects keypoints from videos
-- Processes and saves data automatically
-- Creates mapping between original and processed names
+# Download videos
+python Download.py
 
-### 2. Data Verification
+# Extract text labels
+python Extract.py
+```
+
+### 2. Data Processing
 ```bash
+# Process videos into training data
+python CreateData.py
+
+# Verify data integrity
 python CheckData.py
 ```
-- Checks data integrity
-- Auto-fixes common issues
-- Generates detailed statistics
 
 ### 3. Model Training
 ```bash
 python Training.py
 ```
-- Uses LSTM model with attention mechanism
-- Supports checkpointing and training resumption
-- Visual progress tracking with colors
 
 ### 4. Recognition
 ```bash
 python Main.py
 ```
-- Real-time recognition through webcam
-- Displays results and confidence scores
-- Supports multiple gestures
 
 ## Features
 
-- [x] Automatic video processing
-- [x] MediaPipe keypoint extraction
-- [x] Smart action name mapping
-- [x] Training checkpoints
-- [x] Visual progress tracking
+- [x] Automated video download
+- [x] Vietnamese text extraction using OCR
+- [x] MediaPipe landmark extraction
 - [x] Real-time recognition
-- [x] Confidence evaluation
+- [x] Text-to-speech output
+- [x] Modern PyQt5 GUI
+- [x] Training progress visualization
+- [x] Checkpoint system
+- [x] Data integrity checking
+
+## System Components
+
+1. **Video Downloader**
+   - Downloads sign language videos
+   - Maintains video quality
+   - Handles connection errors
+
+2. **Text Extractor**
+   - Uses Tesseract OCR
+   - Extracts Vietnamese text from videos
+   - Creates Label.csv
+
+3. **Data Processor**
+   - Extracts MediaPipe landmarks
+   - Processes video sequences
+   - Generates training data
+
+4. **Model Trainer**
+   - LSTM-based architecture
+   - Checkpoint system
+   - Progress visualization
+
+5. **Main Application**
+   - Real-time recognition
+   - Vietnamese text-to-speech
+   - User-friendly interface
 
 ## Notes
 
-- Ensure sufficient disk space for training data
-- Check CUDA compatibility for GPU usage
-- Adjust batch size according to RAM/VRAM
+- Ensure Tesseract OCR is properly installed with Vietnamese language support
+- GPU acceleration requires compatible NVIDIA drivers
+- Maintain stable internet connection for video downloads
+- Check storage space for training data
+
+## Troubleshooting
+
+- Check Tesseract installation if text extraction fails
+- Verify CUDA setup for GPU acceleration
+- Monitor logs in Logs directory
+- Ensure proper video format (MP4)
 
 ## Contributing
 
-Contributions are welcome. Please create an issue or pull request.
+Contributions welcome! Please read CONTRIBUTING.md first.
 
 ## License
 
-© 2024 Sign Language Recognition System
+© 2024 Vietnamese Sign Language Recognition System. All rights reserved.
