@@ -1,0 +1,25 @@
+name: Auto commit
+
+on:
+  schedule:
+    - cron: '0 * * * 0-6'  # Mỗi giờ từ Chủ Nhật đến Thứ Bảy
+  workflow_dispatch:  # Cho phép trigger thủ công từ giao diện GitHub
+
+jobs:
+  auto_commit:
+    name: 'Auto push a commit to my repo'
+    runs-on: ubuntu-latest  # Sử dụng Ubuntu
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure git user
+      run: |
+        git config user.name "Automated Bot"  # Đặt tên tác giả
+        git config user.email "letho1608@users.noreply.github.com"  # Đặt email tác giả (noreply để tránh lộ email)
+
+    - name: Commit changes
+      run: |
+        # Tạo một commit trống để đảm bảo luôn có commit mới
+        git commit --allow-empty -m "Automated commit at $(date)"
+        git push
