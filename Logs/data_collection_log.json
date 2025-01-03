@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-01-03 06:46:18",
+  "total_sequences": 600,
+  "total_videos": 3254,
+  "success_rate": 0.18438844499078058,
+  "total_actions": 3239,
+  "processed_actions": 10,
+  "elapsed_time": "97m 38s",
+  "videos_processed": 600,
+  "sequences_success": 600,
+  "success_rate_detailed": 100.0
+}
