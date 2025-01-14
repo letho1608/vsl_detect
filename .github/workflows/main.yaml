@@ -2,7 +2,7 @@ name: Auto commit
 
 on:
   schedule:
-    - cron: '0 * * * 0-6'  # Mỗi giờ từ Chủ Nhật đến Thứ Bảy
+    - cron: '0 0 * * 0-6'  # Mỗi ngày lúc 00:00 từ Chủ Nhật đến Thứ Bảy
   workflow_dispatch:  # Cho phép trigger thủ công từ giao diện GitHub
 
 jobs:
