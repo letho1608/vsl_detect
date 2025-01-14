@@ -140,10 +140,6 @@ python Main.py
 - Monitor logs in Logs directory
 - Ensure proper video format (MP4)
 
-## Contributing
-
-Contributions welcome! Please read CONTRIBUTING.md first.
-
 ## License
 
 © 2024 Vietnamese Sign Language Recognition System. All rights reserved.
