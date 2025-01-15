@@ -81,7 +81,7 @@ python Main.py
 ## Features
 
 - [x] Automated video download
-- [x] Vietnamese text extraction using OCR
+- [x] Vietnamese text extraction
 - [x] MediaPipe landmark extraction
 - [x] Real-time recognition
 - [x] Text-to-speech output
