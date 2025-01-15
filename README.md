@@ -15,8 +15,7 @@ A real-time sign language recognition system using deep learning and computer vi
 ├── Logs/                 # Logs and mappings
 └── Scripts/
     ├── Main.py          # Main application
-    ├── Extract.py       # Text extraction from videos
-    ├── Download.py      # Video downloader
+    ├── Combine.py      # Video downloader and create label
     ├── CreateData.py    # Data processor
     ├── Training.py      # Model trainer
     └── CheckData.py     # Data integrity checker
@@ -35,17 +34,12 @@ A real-time sign language recognition system using deep learning and computer vi
 - MediaPipe
 - OpenCV
 - PyQt5
-- Tesseract OCR
 - CUDA Toolkit (optional)
 
 ## Installation
 
 1. Install required software:
 ```bash
-# Install Tesseract OCR
-# Windows: Download from https://github.com/UB-Mannheim/tesseract/wiki
-# Add Vietnamese language pack
-
 # Install Python dependencies
 pip install tensorflow opencv-python mediapipe PyQt5 pytesseract
 pip install gtts playsound pandas tqdm pygame pywin32
@@ -54,7 +48,7 @@ pip install gtts playsound pandas tqdm pygame pywin32
 2. Clone and setup:
 ```bash
 git clone <repository-url>
-cd vietnamese-sign-language
+cd vsl-detect
 ```
 
 ## Usage
@@ -62,10 +56,7 @@ cd vietnamese-sign-language
 ### 1. Data Collection
 ```bash
 # Download videos
-python Download.py
-
-# Extract text labels
-python Extract.py
+python Combine.py
 ```
 
 ### 2. Data Processing
@@ -107,7 +98,6 @@ python Main.py
    - Handles connection errors
 
 2. **Text Extractor**
-   - Uses Tesseract OCR
    - Extracts Vietnamese text from videos
    - Creates Label.csv
 
@@ -128,7 +118,6 @@ python Main.py
 
 ## Notes
 
-- Ensure Tesseract OCR is properly installed with Vietnamese language support
 - GPU acceleration requires compatible NVIDIA drivers
 - Maintain stable internet connection for video downloads
 - Check storage space for training data
