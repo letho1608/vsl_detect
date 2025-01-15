@@ -41,13 +41,13 @@ A real-time sign language recognition system using deep learning and computer vi
 1. Install required software:
 ```bash
 # Install Python dependencies
-pip install tensorflow opencv-python mediapipe PyQt5 pytesseract
+pip install tensorflow opencv-python mediapipe PyQt5 
 pip install gtts playsound pandas tqdm pygame pywin32
 ```
 
 2. Clone and setup:
 ```bash
-git clone <repository-url>
+git clone [<repository-url>](https://github.com/letho1608/vsl_detect)
 cd vsl-detect
 ```
 
