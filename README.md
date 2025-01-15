@@ -1,4 +1,4 @@
-# Vietnamese Sign Language Recognition System
+# Vietnamese Sign Language Detect
 
 A real-time sign language recognition system using deep learning and computer vision techniques, specialized for Vietnamese sign language.
 
@@ -39,7 +39,7 @@ A real-time sign language recognition system using deep learning and computer vi
 ## Installation
 1. Clone and setup:
 ```bash
-git clone [<repository-url>](https://github.com/letho1608/vsl_detect)
+git clone https://github.com/letho1608/vsl_detect
 cd vsl-detect
 ```
 2. Install required software:
