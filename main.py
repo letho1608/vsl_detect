@@ -107,7 +107,7 @@ def run_gui(config_path: Optional[str] = None) -> int:
         # Create Qt Application
         app = QApplication(sys.argv)
         app.setApplicationName("VSL Detect")
-        app.setApplicationVersion("2.0.0")
+        app.setApplicationVersion("2.1.0")
         app.setOrganizationName("Vietnamese Sign Language Team")
         
         # Set application style
@@ -274,7 +274,7 @@ Examples:
     parser.add_argument(
         "--version", "-v",
         action="version",
-        version="VSL Detect 2.0.0"
+        version="VSL Detect 2.1.0"
     )
     
     args = parser.parse_args()

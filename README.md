@@ -11,6 +11,28 @@
 - Python 3.10 (khuyến nghị)
 - TensorFlow 2.15, MediaPipe 0.10.5, NumPy 1.26.x
 
+### Troubleshooting
+- Lỗi thiếu thư viện: chạy `pip install -r requirements.txt` hoặc xem log console đề xuất gói còn thiếu.
+- Không mở được camera: kiểm tra `camera_index` trong cấu hình hoặc thử các chỉ số 0/1/2.
+- FPS thấp: giảm `frame_width/height`, tăng `frame_skip` trong cấu hình.
+
+### Ví dụ cấu hình YAML (`Configs/config.yaml`)
+```yaml
+logging:
+  level: INFO
+  file: Logs/app.log
+training:
+  camera_index: 0
+  frame_width: 640
+  frame_height: 480
+  fps: 30
+  flip_horizontal: true
+  frame_skip: 2
+  sequence_length: 30
+  min_detection_confidence: 0.5
+  min_tracking_confidence: 0.5
+  prediction_threshold: 0.7
+```
 
 > A Vietnamese Sign Language recognition system optimized for CPU and small datasets.
 

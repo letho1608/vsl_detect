@@ -91,6 +91,10 @@ class SignLanguageApp(QMainWindow):
         self.camera_thread = None
         self.timer = QTimer()
         
+        # FPS tracking
+        self._last_frame_time = None
+        self._current_fps = 0.0
+        
         # Setup UI
         self.setup_ui()
         self.setup_styles()
@@ -522,10 +526,13 @@ class SignLanguageApp(QMainWindow):
     def update_camera_frame(self, frame: np.ndarray, results: Dict[str, Any]):
         """Update camera frame display"""
         try:
+            # Convert frame BGR->RGB for correct color display
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
             # Convert frame to QImage
-            height, width, channel = frame.shape
+            height, width, channel = frame_rgb.shape
             bytes_per_line = 3 * width
-            q_image = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
+            q_image = QImage(frame_rgb.data, width, height, bytes_per_line, QImage.Format_RGB888)
             
             # Scale image to fit label
             pixmap = QPixmap.fromImage(q_image)
@@ -535,6 +542,17 @@ class SignLanguageApp(QMainWindow):
             
             # Update detection results
             self.update_detection_results(results)
+
+            # Update FPS from frame timestamps
+            import time
+            now = time.perf_counter()
+            if self._last_frame_time is not None:
+                delta = now - self._last_frame_time
+                if delta > 0:
+                    # Exponential moving average for smoother FPS
+                    instant_fps = 1.0 / delta
+                    self._current_fps = (0.2 * instant_fps) + (0.8 * self._current_fps)
+            self._last_frame_time = now
             
         except Exception as e:
             self.logger.error(f"Error updating camera frame: {e}")
@@ -614,10 +632,11 @@ class SignLanguageApp(QMainWindow):
     def update_fps(self):
         """Update FPS display"""
         if self.camera_thread and self.camera_thread.running:
-            # Simple FPS calculation (you can implement more sophisticated FPS tracking)
-            self.fps_label.setText("FPS: 30")
+            self.fps_label.setText(f"FPS: {int(round(self._current_fps))}")
         else:
             self.fps_label.setText("FPS: 0")
+            self._current_fps = 0.0
+            self._last_frame_time = None
     
     def handle_camera_error(self, error_message: str):
         """Handle camera errors"""
