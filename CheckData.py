@@ -221,7 +221,7 @@ def find_and_fix_sequence_issues(data_path, required_sequences=60):
         print("Không tìm thấy vấn đề về số lượng sequence.")
 
 if __name__ == "__main__":
-    data_path = 'Data_test'
+    data_path = 'Data'
     
     # Kiểm tra cấu trúc thư mục
     analyze_directory(data_path)
