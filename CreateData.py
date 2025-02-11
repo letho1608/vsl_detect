@@ -16,24 +16,28 @@ import tensorflow as tf
 import warnings
 from scipy import interpolate
 
-# Ẩn các cảnh báo không cần thiết
-warnings.filterwarnings('ignore')
-logging.getLogger('tensorflow').setLevel(logging.ERROR)
-logging.getLogger('mediapipe').setLevel(logging.ERROR)
-logging.getLogger('mediapipe.python._framework_bindings.landmark_pb2').setLevel(logging.ERROR)
-logging.getLogger('mediapipe.python._framework_bindings.packet_creator').setLevel(logging.ERROR)
-logging.getLogger('mediapipe.python._framework_bindings.packet_getter').setLevel(logging.ERROR)
-logging.getLogger('mediapipe.python._framework_bindings.timestamp').setLevel(logging.ERROR)
-logging.getLogger('mediapipe.python._framework_bindings.validated_graph_config').setLevel(logging.ERROR)
+# Thêm biến môi trường trước khi import tensorflow
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Tắt logging TF
+os.environ['MEDIAPIPE_DISABLE_GPU'] = '1'  # Tắt GPU
+os.environ['GLOG_minloglevel'] = '2'  # Tắt logging MediaPipe
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  # Tắt thông báo tối ưu hóa OneDNN
+os.environ['TF_CPP_MIN_VLOG_LEVEL'] = '3'  # Tắt các thông báo verbose
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  # Tắt oneDNN custom operations
 
-# Suppress specific MediaPipe warnings
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-os.environ['MEDIAPIPE_DISABLE_GPU'] = '1'  # Add this line
+# Cấu hình logging trước khi import các module khác
+logging.basicConfig(level=logging.ERROR)
 
-# Disable tensorflow logging
-tf.get_logger().setLevel('ERROR')
+# Bộ lọc cảnh báo bổ sung
+warnings.filterwarnings('ignore', category=FutureWarning)
+warnings.filterwarnings('ignore', category=DeprecationWarning)
+warnings.filterwarnings('ignore', category=UserWarning)
 
-# Initialize colorama
+# Tắt các module MediaPipe cụ thể
+for module in ['mediapipe', 'tensorflow', 'absl']:
+    logging.getLogger(module).setLevel(logging.ERROR)
+    logging.getLogger(module).propagate = False
+
+# Khởi tạo colorama
 init()
 
 class ProgressStats:
@@ -166,18 +170,18 @@ def interpolate_keypoints(keypoints_sequence, target_length=60):
     if len(keypoints_sequence) == 0:
         return None
         
-    # Tạo trục thời gian cho dữ liệu gốc và target
+    # Tạo trục thời gian cho dữ liệu gốc và đích
     original_times = np.linspace(0, 1, len(keypoints_sequence))
     target_times = np.linspace(0, 1, target_length)
     
-    # Nội suy cho từng feature
+    # Nội suy cho từng đặc trưng
     num_features = keypoints_sequence[0].shape[0]
     interpolated_sequence = np.zeros((target_length, num_features))
     
     for feature_idx in range(num_features):
         feature_values = [frame[feature_idx] for frame in keypoints_sequence]
         
-        # Sử dụng cubic spline interpolation
+        # Sử dụng phương pháp nội suy spline bậc 3
         interpolator = interpolate.interp1d(
             original_times, feature_values, 
             kind='cubic',
@@ -194,7 +198,7 @@ def process_video_sequence(video_path, holistic, sequence_length=60):
     cap = cv2.VideoCapture(video_path)
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     
-    # Xác định step size để lấy mẫu frames
+    # Xác định bước nhảy để lấy mẫu frames
     step = max(1, total_frames // 100)  # Lấy tối đa 100 frames để xử lý
     
     while cap.isOpened():
@@ -236,12 +240,27 @@ def collect_data_from_videos():
     DATASET_PATH = os.path.join('Dataset')
     LOG_PATH = os.path.join('Logs')
     
+    # Định nghĩa các biến cấu hình sequence trước
+    no_sequences = 60
+    sequence_length = 60
+    
     os.makedirs(LOG_PATH, exist_ok=True)
     
     # Load data first
     label_file = os.path.join(DATASET_PATH, 'Text', 'Label.csv')
     video_folder = os.path.join(DATASET_PATH, 'Video')
     df = pd.read_csv(label_file)
+    
+    # Initialize all required variables with default values
+    df_filtered = None
+    selected_actions = []
+    num_actions = 0
+    previous_state = load_progress_state(LOG_PATH)
+
+    # Initialize variables before conditional blocks
+    df_filtered = None
+    selected_actions = None
+    num_actions = None
     
     # Kiểm tra trạng thái từ lần chạy trước
     previous_state = load_progress_state(LOG_PATH)
@@ -257,17 +276,54 @@ def collect_data_from_videos():
             num_actions = len(selected_actions)
             print(f"{Fore.GREEN}Tiếp tục với {num_actions} hành động từ lần trước{Style.RESET_ALL}")
             df_filtered = df[df['TEXT'].isin(selected_actions)]
+
+            # Kiểm tra các hành động đã hoàn thành
+            completed_actions = []
+            for action in selected_actions:
+                if action in previous_state['progress']:
+                    if previous_state['progress'][action] >= no_sequences:
+                        completed_actions.append(action)
+            
+            # Nếu có hành động đã hoàn thành, cho phép thu thập thêm
+            if completed_actions:
+                print(f"\n{Fore.YELLOW}Đã hoàn thành {len(completed_actions)} hành động từ lần trước")
+                while True:
+                    collect_more = input(f"{Fore.CYAN}Bạn có muốn thu thập thêm hành động mới? (y/n): {Style.RESET_ALL}").lower()
+                    if collect_more in ['y', 'n']:
+                        break
+                    print(f"{Fore.RED}Vui lòng nhập 'y' hoặc 'n'{Style.RESET_ALL}")
+                
+                if collect_more == 'y':
+                    # Lọc ra các hành động chưa được chọn
+                    remaining_actions = set(df['TEXT'].unique()) - set(selected_actions)
+                    if remaining_actions:
+                        while True:
+                            try:
+                                additional = int(input(f"\n{Fore.CYAN}Nhập số lượng hành động cần thu thập thêm (tối đa {len(remaining_actions)}): {Style.RESET_ALL}"))
+                                if 1 <= additional <= len(remaining_actions):
+                                    break
+                                print(f"{Fore.RED}Vui lòng nhập số từ 1 đến {len(remaining_actions)}{Style.RESET_ALL}")
+                            except ValueError:
+                                print(f"{Fore.RED}Vui lòng nhập một số nguyên hợp lệ{Style.RESET_ALL}")
+                        
+                        # Chọn thêm hành động mới
+                        new_actions = np.random.choice(list(remaining_actions), additional, replace=False)
+                        selected_actions = np.concatenate([selected_actions, new_actions])
+                        num_actions = len(selected_actions)
+                        df_filtered = df[df['TEXT'].isin(selected_actions)]
+                        
+                        # Cập nhật mapping với hành động mới
+                        save_action_mapping(selected_actions, LOG_PATH)
+                        print(f"\n{Fore.GREEN}Đã thêm {additional} hành động mới vào danh sách thu thập{Style.RESET_ALL}")
         else:
             if os.path.exists(DATA_PATH):
                 shutil.rmtree(DATA_PATH)
             previous_state = None
-    
-    if not previous_state:
+
+    # If not continuing from previous state or no previous state exists
+    if df_filtered is None:
         os.makedirs(DATA_PATH, exist_ok=True)
         os.makedirs(LOG_PATH, exist_ok=True)
-        
-        no_sequences = 60
-        sequence_length = 60
         
         # Thêm input số lượng hành động
         total_actions = len(df['TEXT'].unique())
