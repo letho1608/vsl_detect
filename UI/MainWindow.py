@@ -265,7 +265,8 @@ class SignLanguageApp(QMainWindow):
         status_layout.addWidget(self.current_action_label)
         
         # Confidence bar
-        status_layout.addWidget(QLabel("Độ tin cậy:"))
+        self.confidence_text_label = QLabel("Độ tin cậy:")
+        status_layout.addWidget(self.confidence_text_label)
         self.confidence_bar = QProgressBar()
         self.confidence_bar.setRange(0, 100)
         status_layout.addWidget(self.confidence_bar)
@@ -471,6 +472,9 @@ class SignLanguageApp(QMainWindow):
         self.clear_logs_btn.clicked.connect(self.clear_logs)
         self.save_logs_btn.clicked.connect(self.save_logs)
         
+        # Status controls
+        self.show_confidence_cb.toggled.connect(self.toggle_confidence_visibility)
+        
         # Timer for FPS update
         self.timer.timeout.connect(self.update_fps)
         self.timer.start(1000)  # Update every second
@@ -526,6 +530,19 @@ class SignLanguageApp(QMainWindow):
     def update_camera_frame(self, frame: np.ndarray, results: Dict[str, Any]):
         """Update camera frame display"""
         try:
+            # Optional overlay using OpenCV before color conversion
+            try:
+                action = results.get('action', 'Unknown')
+                confidence = float(results.get('confidence', 0.0))
+                conf_percent = int(confidence * 100)
+                overlay_text = f"{action} ({conf_percent}%)"
+                # Choose color based on confidence
+                color = (40, 180, 40) if confidence >= 0.7 else (60, 60, 200) if confidence >= 0.4 else (50, 50, 50)
+                cv2.putText(frame, overlay_text, (12, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2, cv2.LINE_AA)
+                cv2.rectangle(frame, (8, 8), (220, 40), (80, 80, 80), 1)
+            except Exception:
+                pass
+
             # Convert frame BGR->RGB for correct color display
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
@@ -643,6 +660,11 @@ class SignLanguageApp(QMainWindow):
         self.logger.error(f"Camera error: {error_message}")
         QMessageBox.critical(self, "Lỗi Camera", error_message)
         self.stop_camera()
+    
+    def toggle_confidence_visibility(self, checked: bool):
+        """Show/hide confidence widgets based on checkbox"""
+        self.confidence_text_label.setVisible(checked)
+        self.confidence_bar.setVisible(checked)
     
     def closeEvent(self, event):
         """Handle application close event"""
