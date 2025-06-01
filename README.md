@@ -28,19 +28,23 @@ python src/vsl_detect/main.py
 ## 🎯 Features
 
 - 🧠 **AI-Powered Recognition**: Deep learning model for accurate sign detection
-- ⚡ **Real-time Processing**: Optimized for live video detection  
+- ⚡ **Real-time Processing**: Optimized for live video detection
 - 🖥️ **User-friendly Interface**: Easy-to-use GUI application
 - 📈 **Data Optimization**: Advanced data augmentation tools
+- 🚀 **Easy Launcher**: Simple scripts to run project with one command
+- 🎛️ **Interactive Menu**: User-friendly menu for all project functions
 
 ## 📁 Project Structure
 
 ```
 vsl_detect/
+├── run.py               # 🚀 Simple launcher script (Khuyến nghị)
+├── quick_start.py       # 🎛️ Interactive menu launcher
 ├── requirements.txt     # 📋 Core dependencies
 ├── README.md            # 📖 This file
 ├── LICENSE              # 📄 MIT License
 ├── src/vsl_detect/      # 📦 Source code modules
-│   ├── main.py          # 🚀 Main GUI application
+│   ├── main.py          # 🖥️ Main GUI application
 │   ├── core/            # 🧠 Core detection modules
 │   ├── data/            # 📊 Data processing
 │   ├── ui/              # 🖥️ UI components
@@ -94,7 +98,27 @@ python -m pytest tests/
 
 # Production setup
 pip install -r requirements/prod.txt
+
+# Run with arguments
+python src/vsl_detect/main.py --config configs/config.yaml --debug
 ```
+
+## 🚀 Launcher Scripts
+
+### `run.py` - Simple Launcher
+- Tự động kiểm tra Python version (cần 3.8+)
+- Kiểm tra và cài đặt dependencies nếu thiếu
+- Khởi chạy ứng dụng GUI chính
+- **Khuyến nghị sử dụng cho người dùng mới**
+
+### `quick_start.py` - Interactive Menu
+- Menu tương tác với 5 tùy chọn:
+  1. 🖥️ Chạy ứng dụng GUI chính
+  2. 🧠 Huấn luyện mô hình AI
+  3. 📊 Tạo và chuẩn bị dữ liệu
+  4. 📦 Cài đặt dependencies
+  5. 🧪 Chạy tests
+- **Khuyến nghị cho developers và power users**
 
 ## 📊 Performance
 
