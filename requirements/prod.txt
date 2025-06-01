@@ -1,0 +1,12 @@
+# Production requirements
+-r base.txt
+
+# GPU support (optional)
+tensorflow-gpu==2.18.0
+
+# Production optimizations
+gunicorn>=20.1.0; sys_platform != "win32"
+waitress>=2.1.0; sys_platform == "win32"
+
+# Monitoring and logging
+sentry-sdk>=1.14.0

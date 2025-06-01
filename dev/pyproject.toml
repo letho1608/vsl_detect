@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vsl-detect"
+version = "2.0.0"
+description = "Vietnamese Sign Language Detection using Computer Vision and Deep Learning"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Vietnamese Sign Language Detection Team", email = "letho1608@example.com"}
+]
+maintainers = [
+    {name = "Vietnamese Sign Language Detection Team", email = "letho1608@example.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Multimedia :: Video",
+]
+keywords = ["sign-language", "computer-vision", "deep-learning", "vietnamese", "ai"]
+requires-python = ">=3.8"
+dependencies = [
+    "opencv-python>=4.5.0",
+    "tensorflow>=2.8.0",
+    "mediapipe>=0.8.0",
+    "numpy>=1.21.0",
+    "scikit-learn>=1.0.0",
+    "pyyaml>=6.0",
+    "pillow>=8.0.0",
+    "matplotlib>=3.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.950",
+    "pre-commit>=2.15.0",
+]
+prod = [
+    "gunicorn>=20.1.0",
+    "uvicorn>=0.18.0",
+    "fastapi>=0.78.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/letho1608/vsl_detect"
+Repository = "https://github.com/letho1608/vsl_detect.git"
+Documentation = "https://github.com/letho1608/vsl_detect/docs"
+"Bug Tracker" = "https://github.com/letho1608/vsl_detect/issues"
+
+[project.scripts]
+vsl-detect = "main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vsl*"]
+exclude = ["tests*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310", "py311"]
+include = '\.pyi?$'
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=vsl --cov-report=html --cov-report=term-missing"
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

@@ -1,0 +1,37 @@
+# Vietnamese Sign Language Detection
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+build/
+dist/
+
+# Virtual Environment
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Dataset & Models
+Dataset/
+Data/
+Videos/
+*.mp4
+*.avi
+*.keras
+*.h5
+
+# Cache & Logs
+*.cache
+*.log
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db

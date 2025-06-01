@@ -1,0 +1,29 @@
+# Development requirements
+-r base.txt
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+pytest-xdist>=3.2.0
+
+# Code quality
+black>=22.0.0
+flake8>=5.0.0
+mypy>=0.991
+isort>=5.12.0
+pre-commit>=2.20.0
+
+# Documentation
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.0.0
+myst-parser>=0.18.0
+
+# Development tools
+jupyter>=1.0.0
+ipython>=8.0.0
+notebook>=6.5.0
+
+# Profiling and debugging
+memory-profiler>=0.60.0
+line-profiler>=4.0.0
