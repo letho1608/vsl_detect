@@ -28,7 +28,7 @@ python src/vsl_detect/main.py
 ## 🎯 Features
 
 - 🧠 **AI-Powered Recognition**: Deep learning model for accurate sign detection
-- ⚡ **Real-time Processing**: Optimized for live video detection
+- ⚡ **Real-time Processing**: Optimized for live video detection  
 - 🖥️ **User-friendly Interface**: Easy-to-use GUI application
 - 📈 **Data Optimization**: Advanced data augmentation tools
 - 🚀 **Easy Launcher**: Simple scripts to run project with one command
@@ -43,23 +43,63 @@ vsl_detect/
 ├── requirements.txt     # 📋 Core dependencies
 ├── README.md            # 📖 This file
 ├── LICENSE              # 📄 MIT License
-├── src/vsl_detect/      # 📦 Source code modules
-│   ├── main.py          # 🖥️ Main GUI application
-│   ├── core/            # 🧠 Core detection modules
-│   ├── data/            # 📊 Data processing
-│   ├── ui/              # 🖥️ UI components
-│   └── utils/           # 🔧 Utilities
+├── .gitignore           # 🚫 Git ignore rules
+├── src/                 # 📦 Source code modules
+│   └── vsl_detect/      
+│       ├── main.py      # 🖥️ Main GUI application
+│       ├── core/        # 🧠 Core detection modules
+│       │   ├── __init__.py
+│       │   └── detector.py
+│       ├── data/        # 📊 Data processing
+│       │   ├── __init__.py
+│       │   ├── augmentor.py
+│       │   └── fast_processor.py
+│       ├── ui/          # 🖥️ UI components
+│       │   ├── __init__.py
+│       │   ├── main_window.py
+│       │   └── widgets/
+│       │       ├── __init__.py
+│       │       ├── camera_widget.py
+│       │       ├── control_widget.py
+│       │       └── text_widget.py
+│       └── utils/       # 🔧 Utilities
+│           ├── __init__.py
+│           ├── audio.py
+│           ├── config.py
+│           └── logger.py
 ├── apps/                # 📊 Training & data apps
+│   ├── .gitkeep
 │   ├── Training.py      # 🧠 Model training script
 │   └── CreateData.py    # 📊 Data preparation script
-├── tools/               # ⚡ Optimization tools
 ├── configs/             # ⚙️ Configuration files
+│   └── config.yaml      # 📋 Main configuration
 ├── requirements/        # 📋 Detailed requirements
+│   ├── base.txt         # 📋 Base dependencies
+│   ├── dev.txt          # 🔧 Development dependencies
+│   └── prod.txt         # 🚀 Production dependencies
 ├── dev/                 # 🔧 Development files
+│   ├── .gitkeep
+│   ├── Dockerfile       # 🐳 Docker configuration
+│   ├── docker-compose.yml
+│   ├── Makefile         # 🔨 Build commands
+│   ├── pyproject.toml   # 📦 Python project config
+│   └── setup.py         # 📦 Setup script
 ├── tests/               # 🧪 Test files
+│   ├── test_config.py   # 🧪 Configuration tests
+│   └── test_detector.py # 🧪 Detector tests
 ├── scripts/             # 🔧 Utility scripts
+│   ├── augment_data.py  # 📊 Data augmentation
+│   └── setup.py         # 🔧 Setup utilities
+├── tools/               # ⚡ Optimization tools
+│   ├── .gitkeep
+│   ├── clean_root_directory.py
+│   └── reorganize_project.py
 ├── Logs/                # 📊 Training logs
-└── Models/              # 🤖 Trained models
+│   ├── action_mapping.json
+│   ├── data_collection_log.json
+│   ├── progress_state.json
+│   └── training_history.png
+└── Models/              # 🤖 Trained models (empty folder)
 ```
 
 ## 🔧 Usage
@@ -70,11 +110,20 @@ vsl_detect/
 ```bash
 python run.py
 ```
+- Tự động kiểm tra Python version (cần 3.8+)
+- Kiểm tra và cài đặt dependencies nếu thiếu
+- Khởi chạy ứng dụng GUI chính
 
 #### 🎛️ Sử dụng Menu Tương Tác
 ```bash
 python quick_start.py
 ```
+- Menu với 5 tùy chọn:
+  1. 🖥️ Chạy ứng dụng GUI chính
+  2. 🧠 Huấn luyện mô hình AI
+  3. 📊 Tạo và chuẩn bị dữ liệu
+  4. 📦 Cài đặt dependencies
+  5. 🧪 Chạy tests
 
 #### ⚙️ Chạy trực tiếp từng thành phần
 ```bash
@@ -103,23 +152,6 @@ pip install -r requirements/prod.txt
 python src/vsl_detect/main.py --config configs/config.yaml --debug
 ```
 
-## 🚀 Launcher Scripts
-
-### `run.py` - Simple Launcher
-- Tự động kiểm tra Python version (cần 3.8+)
-- Kiểm tra và cài đặt dependencies nếu thiếu
-- Khởi chạy ứng dụng GUI chính
-- **Khuyến nghị sử dụng cho người dùng mới**
-
-### `quick_start.py` - Interactive Menu
-- Menu tương tác với 5 tùy chọn:
-  1. 🖥️ Chạy ứng dụng GUI chính
-  2. 🧠 Huấn luyện mô hình AI
-  3. 📊 Tạo và chuẩn bị dữ liệu
-  4. 📦 Cài đặt dependencies
-  5. 🧪 Chạy tests
-- **Khuyến nghị cho developers và power users**
-
 ## 📊 Performance
 
 - **Accuracy**: 85-95% (with data optimization)
@@ -142,6 +174,7 @@ docker-compose up
 ### Build Commands
 ```bash
 # Using Makefile
+cd dev/
 make install      # Install dependencies
 make test         # Run tests
 make build        # Build package
