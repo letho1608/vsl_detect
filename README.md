@@ -1,22 +1,22 @@
 # Vietnamese Sign Language Detection System
 
-> Cập nhật tài liệu: bổ sung mô tả pipeline và yêu cầu dữ liệu (README refresh)
+> A Vietnamese Sign Language recognition system optimized for CPU and small datasets.
 
-### Pipeline dữ liệu nhanh
-- Đặt video vào thư mục `Dataset/Video/` và nhãn vào `Dataset/Text/Label.csv` với cột `Video,Label`.
-- Chạy xử lý: `python main.py --process-data` để tạo `Data/keypoints.npy` và `Data/labels.npy`.
-- Huấn luyện: `python main.py --train` để huấn luyện mô hình và ghi kết quả vào `Models/`.
+### Quick data pipeline
+- Put videos in `Dataset/Video/` and labels in `Dataset/Text/Label.csv` with columns `Video,Label`.
+- Run processing: `python main.py --process-data` to generate `Data/keypoints.npy` and `Data/labels.npy`.
+- Train: `python main.py --train` to train models and write results to `Models/`.
 
-### Yêu cầu môi trường chính
-- Python 3.10 (khuyến nghị)
+### Environment requirements
+- Python 3.10 (recommended)
 - TensorFlow 2.15, MediaPipe 0.10.5, NumPy 1.26.x
 
 ### Troubleshooting
-- Lỗi thiếu thư viện: chạy `pip install -r requirements.txt` hoặc xem log console đề xuất gói còn thiếu.
-- Không mở được camera: kiểm tra `camera_index` trong cấu hình hoặc thử các chỉ số 0/1/2.
-- FPS thấp: giảm `frame_width/height`, tăng `frame_skip` trong cấu hình.
+- Missing libraries: run `pip install -r requirements.txt` or follow console logs for suggested packages.
+- Cannot open camera: check `camera_index` in config or try indices 0/1/2.
+- Low FPS: reduce `frame_width/height`, increase `frame_skip` in config.
 
-### Ví dụ cấu hình YAML (`Configs/config.yaml`)
+### Example YAML config (`Configs/config.yaml`)
 ```yaml
 logging:
   level: INFO
@@ -33,8 +33,6 @@ training:
   min_tracking_confidence: 0.5
   prediction_threshold: 0.7
 ```
-
-> A Vietnamese Sign Language recognition system optimized for CPU and small datasets.
 
 ## 🚀 Features
 - Lightweight Deep Learning models optimized for CPU  
@@ -64,28 +62,28 @@ pip install tensorflow-cpu opencv-python mediapipe PyQt5 scikit-learn
 ```
 
 ## 🚀 Usage
-- **Run GUI application**:  
+- Run GUI application:  
   `python main.py --gui`  
 
-- **Train model**:  
+- Train model:  
   `python main.py --train --config custom.yaml`  
 
-- **Process video dataset**:  
+- Process video dataset:  
   `python main.py --process-data`  
 
 ## 📈 Demo Workflow
-1. **Prepare Dataset**  
+1. Prepare Dataset  
    - Place videos in `Dataset/Video/`  
    - Store labels in `Dataset/Text/Label.csv`  
 
-2. **Process Data**  
+2. Process Data  
    - Run `python main.py --process-data`  
    - Extract keypoints, augment data, save to `Data/`  
 
-3. **Train Model**  
+3. Train Model  
    - Run `python main.py --train`  
    - Perform cross-validation, select best model, save to `Models/`  
 
-4. **Run Real-Time Detection**  
+4. Run Real-Time Detection  
    - Run `python main.py --gui`  
    - Load trained model, open camera, recognize signs in real-time  
