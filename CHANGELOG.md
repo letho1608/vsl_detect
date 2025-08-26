@@ -5,6 +5,7 @@
 - UI: Thêm tính toán FPS thực bằng EMA, hiển thị theo thời gian thực.
 - Docs: Bổ sung Troubleshooting và ví dụ cấu hình YAML trong README.
 - Chore: Bump version ứng dụng lên 2.1.0.
+- Release: Đóng gói và xác nhận phát hành 2.1.0 vào 26/08/2025.
 
 ## 2.0.0 - 2024-11-05
 - Giao diện PyQt5 với sidebar dọc, tabs Camera/Logs/Cài đặt.
